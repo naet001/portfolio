@@ -151,11 +151,31 @@ main > section:not(.bg-ink)::after {
    are light — the texture follows paper, not a literal white. */
 #contact {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Bold photo bleed: stacked ink wash + photo keeps `bg-ink`
+     as the fallback while the image loads. The wash uses the
+     ink token so it inverts with the theme like everything else.
+     Source is already monochrome, so no grayscale filter needed. */
+  background-image:
+    linear-gradient(rgb(var(--color-ink) / 0.5), rgb(var(--color-ink) / 0.5)),
+    url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+/* Dark mode: ink is white, so the same photo needs a heavier
+   white wash — otherwise paper (black) type fails on mid-gray. */
+[data-theme='dark'] #contact {
+  background-image:
+    linear-gradient(rgb(var(--color-ink) / 0.72), rgb(var(--color-ink) / 0.72)),
+    url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
 }
 #contact::before {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
   background-image: repeating-linear-gradient(
     90deg,
@@ -166,6 +186,10 @@ main > section:not(.bg-ink)::after {
   );
   background-size: 4px 100%;
   opacity: var(--texture-inverted);
+}
+#contact > div {
+  position: relative;
+  z-index: 1;
 }
 
 /* --- Hero: photograph bleeds in behind the type ------------ */
@@ -207,6 +231,46 @@ footer a:focus-visible {
   outline-color: rgb(var(--color-paper));
 }
 
+/* --- Contact and footer: slow charcoal light on grain --------- */
+.ambient-footer,
+#contact {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ambient-footer::before,
+#contact::after {
+  content: '';
+  position: absolute;
+  inset: -16% -8%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 78% 120% at 78% 8%, rgb(var(--color-paper) / 0.14), rgb(var(--color-paper) / 0.07) 30%, transparent 72%),
+    radial-gradient(ellipse 58% 120% at 55% -8%, rgb(var(--color-paper) / 0.06), transparent 70%),
+    radial-gradient(ellipse 120% 130% at 50% 52%, transparent 48%, rgb(var(--color-ink) / 0.24) 100%);
+  transform: translate3d(-0.45%, 0.2%, 0) scale(1.01);
+  animation: footer-atmosphere 32s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.ambient-footer.is-visible::before,
+#contact.is-visible::after {
+  animation-play-state: running;
+}
+.ambient-footer > div {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes footer-atmosphere {
+  from {
+    transform: translate3d(-0.45%, 0.2%, 0) scale(1.01);
+  }
+  to {
+    transform: translate3d(0.45%, -0.2%, 0) scale(1.025);
+  }
+}
+
 /* --- Decorative square motif ------------------------------ */
 /* Recurring accent — the "signature" of the system. */
 .square-motif {
@@ -233,5 +297,9 @@ footer a:focus-visible {
   [data-theme-switch] *::before,
   [data-theme-switch] *::after {
     transition: none !important;
+  }
+  .ambient-footer::before,
+  #contact::after {
+    animation: none;
   }
 }

@@ -125,3 +125,34 @@
   window.addEventListener('resize', update);
   update();
 })();
+
+// Ambient lighting: run only while its surface is visible.
+(function () {
+  var surfaces = document.querySelectorAll('.ambient-footer, #contact');
+  if (!surfaces.length || !window.IntersectionObserver) return;
+
+  var inView = [];
+
+  function update() {
+    for (var i = 0; i < surfaces.length; i++) {
+      surfaces[i].classList.toggle('is-visible', inView[i] && !document.hidden);
+    }
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      for (var j = 0; j < surfaces.length; j++) {
+        if (entries[i].target === surfaces[j]) {
+          inView[j] = entries[i].isIntersecting;
+          break;
+        }
+      }
+    }
+    update();
+  });
+
+  document.addEventListener('visibilitychange', update);
+  for (var j = 0; j < surfaces.length; j++) {
+    observer.observe(surfaces[j]);
+  }
+})();
