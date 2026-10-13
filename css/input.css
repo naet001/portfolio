@@ -194,7 +194,10 @@ main > section:not(.bg-ink)::after {
 
 /* --- Hero: photograph bleeds in behind the type ------------ */
 /* Desaturated to keep the monochrome system; the paper
-   overlay keeps display type at full ink contrast. */
+   overlay keeps display type at full ink contrast. Base wash
+   is uniform so mobile (text over image center) and dark mode
+   stay safe. On md+ light mode it becomes directional: heavy
+   behind the left text, lifting to reveal the sculpture right. */
 #hero {
   background-image: url('../images/milad-fakurian-XnkLo3xc960-unsplash.jpg');
   background-repeat: no-repeat;
@@ -210,6 +213,22 @@ main > section:not(.bg-ink)::after {
   pointer-events: none;
   background-color: rgb(var(--color-paper));
   opacity: 0.82;
+}
+@media (min-width: 768px) {
+  html[data-theme='light'] #hero {
+    background-position: 65% center;
+  }
+  html[data-theme='light'] #hero::before {
+    background-image: linear-gradient(
+      90deg,
+      rgb(var(--color-paper) / 0.88) 0%,
+      rgb(var(--color-paper) / 0.72) 35%,
+      rgb(var(--color-paper) / 0.35) 65%,
+      rgb(var(--color-paper) / 0.15) 100%
+    );
+    background-color: transparent;
+    opacity: 1;
+  }
 }
 #hero > * {
   position: relative;
