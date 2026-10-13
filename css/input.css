@@ -78,6 +78,18 @@ body {
     fill 200ms linear !important;
 }
 
+/* --- Fixed header ------------------------------------------ */
+/* Transparent over the hero. js/main.js adds .is-solid once the
+   page has scrolled past the hero, so nav links stay legible over
+   the sections below. Background follows the paper token, so the
+   opaque bar inverts with the theme like everything else. */
+#top {
+  transition: background-color 150ms ease;
+}
+#top.is-solid {
+  background-color: rgb(var(--color-paper));
+}
+
 /* --- Global texture layers (REQUIRED — prevents flat look) --- */
 /* Body gets paper-grain noise; sections below stack their own patterns. */
 body::before {

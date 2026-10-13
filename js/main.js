@@ -97,3 +97,21 @@
     }
   });
 })();
+
+// Header: transparent over the hero, opaque once scrolled past it
+(function () {
+  var header = document.getElementById('top');
+  var hero = document.getElementById('hero');
+  if (!header || !hero) return;
+
+  // Solid when the header (0..height in viewport) sits entirely
+  // below the hero, i.e. it starts covering the section after it.
+  function update() {
+    var past = window.pageYOffset >= hero.offsetHeight - header.offsetHeight;
+    header.classList.toggle('is-solid', past);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
