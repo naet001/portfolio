@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Minimalist Monochrome — global styles
+   Design tokens live in tailwind.config.js.
+   This file holds only what Tailwind utilities don't cover:
+   base resets, focus states, textures, and the one motif.
+   ============================================================ */
+
+/* --- Base ------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Global texture layers (REQUIRED — prevents flat look) --- */
+/* Body gets paper-grain noise; sections below stack their own patterns. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  opacity: 0.02;
+}
+
+/* Horizontal lines on all light sections */
+main > section:not(.bg-ink) {
+  position: relative;
+}
+main > section:not(.bg-ink)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    #000 1px,
+    #000 2px
+  );
+  background-size: 100% 4px;
+  opacity: 0.015;
+}
+
+/* Vertical lines on the dark Contact section */
+#contact {
+  position: relative;
+}
+#contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 1px,
+    #fff 1px,
+    #fff 2px
+  );
+  background-size: 4px 100%;
+  opacity: 0.03;
+}
+
+/* --- Focus: thick offset outline, per design system -------- */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #000000;
+  outline-offset: 3px;
+}
+
+/* On the black contact block, invert the focus ring */
+#contact a:focus-visible,
+#contact button:focus-visible,
+footer a:focus-visible {
+  outline-color: #FFFFFF;
+}
+
+/* --- Decorative square motif ------------------------------ */
+/* Recurring accent — the "signature" of the system. */
+.square-motif {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background-color: #000000;
+}
+
+/* --- Reduced motion ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

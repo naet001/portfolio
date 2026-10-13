@@ -1,0 +1,6 @@
+node_modules/
+
+# Tailwind build output is generated from css/input.css.
+# Keep it if you deploy without a build step; ignore it if your
+# host runs `npm run build` on deploy.
+# css/main.css
