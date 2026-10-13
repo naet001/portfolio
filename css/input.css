@@ -95,6 +95,19 @@ body {
   background-color: rgb(var(--color-paper));
 }
 
+/* --- Mobile menu button ------------------------------------ */
+/* Bars <-> X swap, driven entirely by the aria-expanded state that
+   js/main.js already maintains — no JS changes needed for the icon. */
+#menu-btn .menu-icon-close {
+  display: none;
+}
+#menu-btn[aria-expanded='true'] span {
+  display: none;
+}
+#menu-btn[aria-expanded='true'] .menu-icon-close {
+  display: block;
+}
+
 /* --- Global texture layers (REQUIRED — prevents flat look) --- */
 /* Body gets paper-grain noise; sections below stack their own patterns. */
 body::before {
