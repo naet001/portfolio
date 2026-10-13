@@ -82,9 +82,14 @@ body {
 /* Transparent over the hero. js/main.js adds .is-solid once the
    page has scrolled past the hero, so nav links stay legible over
    the sections below. Background follows the paper token, so the
-   opaque bar inverts with the theme like everything else. */
+   opaque bar inverts with the theme like everything else.
+   The bottom hairline is demarcation only for the solid state:
+   while the header floats over the hero it must not draw a line. */
 #top {
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+#top:not(.is-solid) {
+  border-bottom-color: transparent;
 }
 #top.is-solid {
   background-color: rgb(var(--color-paper));
