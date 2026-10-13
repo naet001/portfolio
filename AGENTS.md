@@ -20,9 +20,9 @@ portfolio/
 ├── css/
 │   ├── input.css         # Source CSS: @tailwind directives + global non-utility styles
 │   └── main.css          # GENERATED build output — do not edit by hand
-├── js/main.js            # Vanilla JS: mobile nav toggle (IIFE, ES5-style)
+├── js/main.js            # Vanilla JS: theme toggle + mobile nav (separate IIFEs)
 ├── images/               # Unused stock assets (not currently referenced in markup)
-├── tailwind.config.js    # Design tokens: colors, fonts, maxWidth
+├── tailwind.config.js    # Token aliases (font/width) + CSS-variable color channels
 ├── package.json          # Tailwind CLI only
 └── .gitignore
 ```
@@ -50,13 +50,37 @@ npm run dev          # same, with --watch
 **Tailwind**
 - Content scan path is `./index.html` only. New classes in `js/` or `css/input.css` will be
   purged unless you add the file to `content` in `tailwind.config.js`.
-- Tokens are defined once in `tailwind.config.js` and must be used instead of raw hex values:
-  - colors: `ink` (#000), `paper` (#FFF), `muted` (#525252), `line` (#E5E5E5)
+- Tokens are defined once in `tailwind.config.js` and must be used instead of raw hex values.
+  They are **CSS-variable-backed channel triplets** (`rgb(var(--color-ink) / <alpha-value>)`), not
+  raw hex — that's what keeps the `text-ink/70` opacity modifiers working.
+  - colors: `ink`, `paper`, `muted`, `line` — the actual RGB channel values live in
+    `css/input.css` (`:root` = light, `[data-theme='dark']` = dark), **not** in the config.
   - fonts: `font-serif` (Playfair Display — display/headings), `font-body` (Source Serif 4 —
     body, set on `<body>`), `font-mono` (JetBrains Mono — labels, dates, metadata), `font-sans`
   - layout: `max-w-site` (72rem) is the container; `px-6 md:px-10` is the gutter
 - Opacity modifiers on the tokens (`text-ink/70`, `bg-paper/90`) are the accepted way to get
   secondary tones instead of introducing new grays.
+
+**Theme (dark/light)**
+- The palette stays strictly two-color. Dark mode is a pure inversion: `ink` and `paper` swap,
+  and `muted`/`line` move to their inverse weights. **Never introduce a third color or a
+  `dark:` variant class** — add a token instead. Dark mode must be expressible as an inversion.
+- `js/main.js` owns the toggle; an inline `<script>` in `<head>` of `index.html` sets
+  `data-theme` on `<html>` *before first paint* (do not move it below the stylesheet link, or
+  the page flashes the wrong theme). With no stored choice it follows
+  `prefers-color-scheme`; an explicit toggle is stored in `localStorage.theme` and then wins.
+- In `css/input.css`, never hardcode `#000`/`#fff` — use `rgb(var(--color-ink))` /
+  `rgb(var(--color-paper))`. This includes textures, focus rings, the hero overlay, and
+  `.square-motif`. The contact/footer blocks use the *paper* token for their texture and focus
+  ring because they carry `bg-ink text-paper` and therefore invert with the page.
+- Texture opacities are per-theme variables (`--texture-section`, `--texture-inverted`,
+  `--texture-noise`) because the same line weight reads differently on black.
+- Sections with `bg-ink text-paper` (contact, footer) intentionally become **light** blocks on
+  the dark page. That's the design working, not a bug — do not "fix" it with dark: overrides.
+- The 200ms cross-fade is scoped to a temporary `data-theme-switch` attribute added by JS, so
+  it doesn't lengthen the site's normal 100–150ms hover transitions. It's explicitly disabled
+  under `prefers-reduced-motion`.
+- Verify theme work by checking *both* themes in a browser; there is no test suite.
 
 **HTML**
 - One `<section>` per page block, each `id`-linked from the nav with `scroll-mt-16` for the

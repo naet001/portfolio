@@ -4,10 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: '#000000',
-        paper: '#FFFFFF',
-        muted: '#525252',
-        line: '#E5E5E5',
+        // Channels (space-separated RGB) so Tailwind opacity modifiers work
+        // (`text-ink/70`). The actual values are CSS variables defined in
+        // css/input.css — `:root` holds the light theme and
+        // `[data-theme="dark"]` overrides them. Both themes are pure
+        // black & white: ink and paper simply swap.
+        ink: 'rgb(var(--color-ink) / <alpha-value>)',
+        paper: 'rgb(var(--color-paper) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
+        line: 'rgb(var(--color-line) / <alpha-value>)',
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
