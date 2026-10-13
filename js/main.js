@@ -7,15 +7,14 @@
 // Theme
 // The initial theme is applied by the inline bootstrap in index.html
 // before first paint. This module owns everything after that: the
-// toggle button, persisting the choice, and keeping an untouched
-// site in sync with OS-level changes made while the page is open.
+// toggle buttons (desktop header + mobile menu), persisting the
+// choice, and keeping an untouched site in sync with OS-level
+// changes made while the page is open.
 (function () {
-  var btn = document.getElementById('theme-toggle');
-  if (!btn) return;
+  var btns = document.querySelectorAll('.theme-toggle');
+  if (!btns.length) return;
 
   var root = document.documentElement;
-  var lightIcon = document.getElementById('theme-icon-light');
-  var darkIcon = document.getElementById('theme-icon-dark');
   var media = window.matchMedia('(prefers-color-scheme: dark)');
 
   function current() {
@@ -32,9 +31,18 @@
 
   function syncButton(theme) {
     var toDark = theme === 'light';
-    btn.setAttribute('aria-label', 'Switch to ' + (toDark ? 'dark' : 'light') + ' theme');
-    if (lightIcon) lightIcon.classList.toggle('hidden', !toDark);
-    if (darkIcon) darkIcon.classList.toggle('hidden', toDark);
+    var label = 'Switch to ' + (toDark ? 'dark' : 'light') + ' theme';
+    var text = theme === 'dark' ? 'Dark mode' : 'Light mode';
+    for (var i = 0; i < btns.length; i++) {
+      var b = btns[i];
+      var lightIcon = b.querySelector('.theme-icon-light');
+      var darkIcon = b.querySelector('.theme-icon-dark');
+      var labelText = b.querySelector('.theme-toggle-label');
+      b.setAttribute('aria-label', label);
+      if (labelText) labelText.textContent = text;
+      if (lightIcon) lightIcon.classList.toggle('hidden', !toDark);
+      if (darkIcon) darkIcon.classList.toggle('hidden', toDark);
+    }
   }
 
   function apply(theme, animate) {
@@ -49,11 +57,13 @@
     syncButton(theme);
   }
 
-  btn.addEventListener('click', function () {
-    var next = current() === 'dark' ? 'light' : 'dark';
-    apply(next, true);
-    store(next);
-  });
+  for (var j = 0; j < btns.length; j++) {
+    btns[j].addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      apply(next, true);
+      store(next);
+    });
+  }
 
   // Follow the OS only while the visitor hasn't chosen explicitly.
   var onSystemChange = function (e) {
