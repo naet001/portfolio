@@ -72,6 +72,30 @@ main > section:not(.bg-ink)::after {
   opacity: 0.03;
 }
 
+/* --- Hero: photograph bleeds in behind the type ------------ */
+/* Desaturated to keep the monochrome system; the paper
+   overlay keeps display type at full ink contrast. */
+#hero {
+  background-image: url('../images/milad-fakurian-XnkLo3xc960-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  filter: grayscale(1);
+}
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: #FFFFFF;
+  opacity: 0.82;
+}
+#hero > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* --- Focus: thick offset outline, per design system -------- */
 a:focus-visible,
 button:focus-visible {
