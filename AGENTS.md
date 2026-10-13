@@ -55,8 +55,9 @@ npm run dev          # same, with --watch
   raw hex — that's what keeps the `text-ink/70` opacity modifiers working.
   - colors: `ink`, `paper`, `muted`, `line` — the actual RGB channel values live in
     `css/input.css` (`:root` = light, `[data-theme='dark']` = dark), **not** in the config.
-  - fonts: `font-serif` (Playfair Display — display/headings), `font-body` (Source Serif 4 —
-    body, set on `<body>`), `font-mono` (JetBrains Mono — labels, dates, metadata), `font-sans`
+  - fonts: `font-serif` (Instrument Serif — display/headings, **400 only, never `font-bold`**),
+    `font-body` (DM Sans — body, set on `<body>`), `font-mono` (IBM Plex Mono — labels, dates,
+    metadata), `font-sans` (DM Sans). The full mapping lives in `../FONTS.md`.
   - layout: `max-w-site` (72rem) is the container; `px-6 md:px-10` is the gutter
 - Opacity modifiers on the tokens (`text-ink/70`, `bg-paper/90`) are the accepted way to get
   secondary tones instead of introducing new grays.
@@ -92,8 +93,8 @@ npm run dev          # same, with --watch
 **Typography**
 - Micro-labels, indices, years, and tech tags are `font-mono text-[0.7rem] uppercase
   tracking-[0.2em] text-muted`. Keep this exact treatment consistent.
-- Headlines are `font-serif font-bold tracking-tight` with viewport-based sizes
-  (`text-[13vw] md:text-[9rem]`).
+- Headlines are `font-serif tracking-tight` with viewport-based sizes
+  (`text-[13vw] md:text-[9rem]`). No `font-bold` — Instrument Serif ships 400 only.
 - Body copy is `text-ink/80`, `leading-relaxed`.
 
 **Interaction**

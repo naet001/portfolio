@@ -15,10 +15,13 @@ module.exports = {
         line: 'rgb(var(--color-line) / <alpha-value>)',
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        body: ['"Source Serif 4"', 'Georgia', 'serif'],
-        sans: ['"Inter"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        // Per ../FONTS.md: Instrument Serif (display, ships 400 only — never
+        // add font-bold to font-serif headings, it would faux-bold),
+        // DM Sans (body + navigation), IBM Plex Mono (labels/dates/metadata).
+        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
       maxWidth: {
         site: '72rem',
