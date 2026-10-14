@@ -7,7 +7,7 @@
    Design tokens live in tailwind.config.js, which reads the
    CSS variables defined below. This file holds only what
    Tailwind utilities don't cover: base resets, focus states,
-   textures, and the one motif.
+   photo treatments, and the one motif.
 
    THEMING
    Light is the default in `:root`. `[data-theme="dark"]` is
@@ -26,11 +26,10 @@
   --color-muted: 82 82 82;
   --color-line: 229 229 229;
 
-  /* Opacity of the global texture layers, per theme. The
-     patterns are drawn in the ink color, so they need less
-     weight on black than on white to stay this faint. */
+  /* Opacity of the remaining texture layers. Photo sections (#hero,
+     #contact) are excluded from all grain/pattern, so there is no
+     inverted-photo token anymore. */
   --texture-section: 0.015;
-  --texture-inverted: 0.03;
   --texture-noise: 0.02;
 }
 
@@ -42,7 +41,6 @@
   --color-line: 48 48 48;
 
   --texture-section: 0.03;
-  --texture-inverted: 0.015;
   --texture-noise: 0.03;
 }
 
@@ -108,8 +106,10 @@ body {
   display: block;
 }
 
-/* --- Global texture layers (REQUIRED — prevents flat look) --- */
-/* Body gets paper-grain noise; sections below stack their own patterns. */
+/* --- Global texture layers (non-photo areas only) ---------- */
+/* Body gets paper-grain noise and light sections stack a line
+   pattern. Photo sections (#hero, #contact) sit above the grain
+   and skip the line pattern, so their images render clean. */
 body::before {
   content: '';
   position: fixed;
@@ -126,11 +126,20 @@ body::before {
   filter: invert(1);
 }
 
-/* Horizontal lines on all light sections */
-main > section:not(.bg-ink) {
+/* Horizontal lines on light sections without photos — #hero is
+   excluded so its photograph renders clean. */
+main > section:not(.bg-ink):not(#hero) {
   position: relative;
 }
-main > section:not(.bg-ink)::after {
+/* Photo sections sit above the global grain layer so their
+   images render clean — no noise, no line pattern. */
+#hero,
+#contact {
+  position: relative;
+  isolation: isolate;
+  z-index: 2;
+}
+main > section:not(.bg-ink):not(#hero)::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -146,9 +155,8 @@ main > section:not(.bg-ink)::after {
   opacity: var(--texture-section);
 }
 
-/* Vertical lines on the dark Contact section. Those blocks carry
-   `bg-ink text-paper`, so in dark mode the page inverts and they
-   are light — the texture follows paper, not a literal white. */
+/* Contact photo: stacked wash + image keeps `bg-ink` as the fallback
+   while the image loads. No grain or line pattern — clean photo. */
 #contact {
   position: relative;
   isolation: isolate;
@@ -165,28 +173,30 @@ main > section:not(.bg-ink)::after {
   background-size: cover;
 }
 /* Dark mode: ink is white, so the same photo needs a heavier
-   white wash — otherwise paper (black) type fails on mid-gray. */
+   white wash — otherwise paper (black) type fails on mid-gray.
+   Base stays uniform so mobile (text over image center) is safe;
+   on md+ it becomes directional like the hero: heavy behind the
+   left text, lifting to reveal the form on the right. */
 [data-theme='dark'] #contact {
   background-image:
     linear-gradient(rgb(var(--color-ink) / 0.72), rgb(var(--color-ink) / 0.72)),
     url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
 }
-#contact::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 1px,
-    rgb(var(--color-paper)) 1px,
-    rgb(var(--color-paper)) 2px
-  );
-  background-size: 4px 100%;
-  opacity: var(--texture-inverted);
+@media (min-width: 768px) {
+  html[data-theme='dark'] #contact {
+    background-image:
+      linear-gradient(
+        90deg,
+        rgb(var(--color-ink) / 0.88) 0%,
+        rgb(var(--color-ink) / 0.72) 35%,
+        rgb(var(--color-ink) / 0.35) 65%,
+        rgb(var(--color-ink) / 0.15) 100%
+      ),
+      url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
+    background-position: 65% center;
+  }
 }
+/* #contact content sits above the photo; no pattern layer. */
 #contact > div {
   position: relative;
   z-index: 1;
@@ -250,15 +260,68 @@ footer a:focus-visible {
   outline-color: rgb(var(--color-paper));
 }
 
-/* --- Contact and footer: slow charcoal light on grain --------- */
-.ambient-footer,
-#contact {
+/* --- Sweep hover: left-to-right fill ------------------------- */
+/* Replaces the instant color inversion with a wipe. The fill
+   lives in ::before (scaleX 0 -> 1) behind the text; the text
+   color flips via the hover:text-* utility on hover and via the
+   rules below on keyboard focus, so contrast holds in both.
+   Two directions: .sweep-ink fills with ink (for paper
+   backgrounds); .sweep-paper fills with paper (for ink
+   backgrounds and solid-ink buttons). Base bg-* utilities stay
+   — the sweep covers them, so the end state matches the old
+   inversion, just animated. Rest origin is right so the wipe
+   exits to the right; hover origin is left so it enters from
+   the left. Longer than the 150ms color cap — the motion needs
+   room to read as a fill. Reduced-motion users get the instant
+   flip via the global transition neutraliser. */
+.sweep-ink,
+.sweep-paper {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Text flips just after the fill starts, so mid-wipe contrast
+     always holds. Wins over Tailwind's transition-colors (same
+     specificity, later in the cascade) to add the delay. */
+  transition: color 150ms ease 60ms;
+}
+.sweep-ink::before,
+.sweep-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: rgb(var(--color-ink));
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 260ms ease-out;
+}
+.sweep-paper::before {
+  background-color: rgb(var(--color-paper));
+}
+.sweep-ink:hover::before,
+.sweep-ink:focus-visible::before,
+.sweep-paper:hover::before,
+.sweep-paper:focus-visible::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.sweep-ink:focus-visible {
+  color: rgb(var(--color-paper));
+}
+.sweep-paper:focus-visible {
+  color: rgb(var(--color-ink));
+}
+
+/* --- Footer: slow charcoal light ------------------------------ */
+/* Footer only — #contact is a photo section and renders clean
+   with no overlays beyond its legibility wash. */
+.ambient-footer {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
-.ambient-footer::before,
-#contact::after {
+.ambient-footer::before {
   content: '';
   position: absolute;
   inset: -16% -8%;
@@ -272,8 +335,7 @@ footer a:focus-visible {
   animation: footer-atmosphere 32s ease-in-out infinite alternate;
   animation-play-state: paused;
 }
-.ambient-footer.is-visible::before,
-#contact.is-visible::after {
+.ambient-footer.is-visible::before {
   animation-play-state: running;
 }
 .ambient-footer > div {
@@ -317,8 +379,7 @@ footer a:focus-visible {
   [data-theme-switch] *::after {
     transition: none !important;
   }
-  .ambient-footer::before,
-  #contact::after {
+  .ambient-footer::before {
     animation: none;
   }
 }

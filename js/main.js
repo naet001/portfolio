@@ -126,9 +126,9 @@
   update();
 })();
 
-// Ambient lighting: run only while its surface is visible.
+// Ambient lighting: run only while the footer is visible.
 (function () {
-  var surfaces = document.querySelectorAll('.ambient-footer, #contact');
+  var surfaces = document.querySelectorAll('.ambient-footer');
   if (!surfaces.length || !window.IntersectionObserver) return;
 
   var inView = [];

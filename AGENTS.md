@@ -98,9 +98,8 @@ npm run dev          # same, with --watch
 - Body copy is `text-ink/80`, `leading-relaxed`.
 
 **Interaction**
-- Hover states are **inversions**, not tints: `hover:bg-ink hover:text-paper` (or the
-  reverse on dark sections). Use `group` + `group-hover:` for per-child changes in a row.
-- Transitions are `duration-100` for buttons, `duration-150` for text links. Nothing slower.
+- Hover states are **left-to-right fill sweeps**, not instant inversions: `sweep-ink hover:text-paper` on paper surfaces (nav links, project rows, CV/email buttons), `sweep-paper hover:text-ink` on ink surfaces (contact CTA, social links, solid-ink buttons). The `::before` fill wipes in via scaleX over 260ms; the text flips on hover and `:focus-visible` with a 60ms delay so mid-wipe contrast holds. Keep `border` + base `bg-*` — the sweep covers them. Use `group` + `group-hover:`/`group-focus:` for per-child changes in a row.
+- Transitions: color flips are 150ms (60ms delayed on sweeps); the sweep fill itself is 260ms ease-out. Nothing slower.
 - Zero `rounded-*`. No shadows. No gradients. No accent colors.
 
 **Accessibility**
