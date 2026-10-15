@@ -4,7 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nommoh Hayab — Backend Engineer</title>
-  <meta name="description" content="Portfolio of Nommoh Isaac Hayab, a backend engineer building reliable, scalable systems." />
+  <meta name="description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
+
+  <!-- Canonical + social preview.
+       og:image is deliberately absent: the photos are CSS background-images,
+       not <img> assets, so there is no shareable image to point at yet. A
+       1200x630 card would materially improve link previews on LinkedIn,
+       WhatsApp, X, and iMessage — add one and flip twitter:card to
+       summary_large_image when you do. -->
+  <link rel="canonical" href="https://nommoh-hayab.vercel.app/" />
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Nommoh Hayab" />
+  <meta property="og:locale" content="en" />
+  <meta property="og:url" content="https://nommoh-hayab.vercel.app/" />
+  <meta property="og:title" content="Nommoh Hayab — Backend Engineer" />
+  <meta property="og:description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
+
+  <!-- summary, not summary_large_image: there is no image to expand. -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Nommoh Hayab — Backend Engineer" />
+  <meta name="twitter:description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet" />
@@ -25,6 +48,35 @@
         document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
+  </script>
+
+  <!-- Person schema — describes the site owner for search engines and
+       supports profile panels. `sameAs` ties the GitHub and LinkedIn
+       profiles to this one identity. knowsAbout mirrors the hero copy
+       (APIs, pipelines, infrastructure); extend it if the work changes. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://nommoh-hayab.vercel.app/#person",
+    "name": "Nommoh Isaac Hayab",
+    "url": "https://nommoh-hayab.vercel.app/",
+    "email": "mailto:hnommoh@gmail.com",
+    "jobTitle": "Backend Engineer",
+    "description": "Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure.",
+    "knowsAbout": [
+      "Backend Engineering",
+      "API Design",
+      "Data Pipelines",
+      "Infrastructure",
+      "Distributed Systems",
+      "Scalability"
+    ],
+    "sameAs": [
+      "https://github.com/naet001",
+      "https://www.linkedin.com/in/nommoh-hayab-712abb440"
+    ]
+  }
   </script>
 </head>
 <body class="bg-paper text-ink font-body antialiased selection:bg-ink selection:text-paper">

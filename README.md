@@ -117,6 +117,33 @@ npm run build      # buildCommand — regenerates css/main.css from css/input.cs
 
 Push to `main` and Vercel deploys from `origin`.
 
+## SEO
+
+The canonical origin is **`https://nommoh-hayab.vercel.app/`**. That exact string appears in
+four places, all of which must stay in sync:
+
+| File | What it holds |
+|---|---|
+| `index.html` | `<link rel="canonical">`, `og:url`, and the JSON-LD `url` / `@id` |
+| `robots.txt` | `Allow: /` plus the `Sitemap:` line |
+| `sitemap.xml` | The one URL, its `lastmod`, and `changefreq` |
+
+- **Open Graph / Twitter Card** — title, description, URL, locale. `twitter:card` is
+  `summary`, not `summary_large_image`, because there is **no `og:image`**: the photos are
+  CSS background-images, so there is no shareable asset to point at. Links render as
+  text-only cards. Dropping in a 1200x630 card is the single highest-impact SEO/social win
+  still available.
+- **JSON-LD** — a `schema.org/Person` block describing name, job title, email, and `sameAs`
+  links to GitHub and LinkedIn, which lets search engines tie those profiles to one identity.
+  `knowsAbout` mirrors the hero copy; update it if the positioning changes.
+- **`sitemap.xml` `lastmod`** — bump the date when page content meaningfully changes. Google
+  largely ignores it, but it costs nothing to be accurate.
+- **Heading structure** is already correct: one `<h1>`, then `h2` per section and `h3` per
+  role. Keep it that way — don't promote section titles to `h1`.
+
+After deploy, validate with Google's Rich Results Test and the W3C Markup Validator rather
+than guessing.
+
 ## License
 
 Private portfolio. All rights reserved.

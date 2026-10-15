@@ -136,3 +136,11 @@ npm run dev          # same, with --watch
   assume assets exist.
 - Content is hardcoded placeholder-ish copy (companies, project names, star counts). If asked
   to make content real, only replace strings — do not restructure the markup.
+- The canonical origin `https://nommoh-hayab.vercel.app/` is duplicated across `index.html`
+  (canonical, `og:url`, JSON-LD `url`/`@id`), `robots.txt`, and `sitemap.xml`. If the domain
+  changes, update all of them together — a stale canonical is worse than none.
+- There is intentionally **no `og:image`**. The photos are CSS background-images, so there is
+  no shareable asset; `twitter:card` is `summary` for that reason. Don't add a large-image card
+  without an actual 1200x630 file.
+- `favicon.svg` draws its letterforms as geometry with a `fill=` presentation-attribute fallback,
+  so it still renders if a browser strips the `<style>` block. Keep both.

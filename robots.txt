@@ -1,0 +1,7 @@
+# Everything on this site is public.
+# The page is a single URL; there is nothing to disallow.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://nommoh-hayab.vercel.app/sitemap.xml
