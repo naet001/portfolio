@@ -25,9 +25,6 @@
   --color-paper: 255 255 255;
   --color-muted: 82 82 82;
   --color-line: 229 229 229;
-
-  /* Opacity of the line-pattern layer. There is no grain layer. */
-  --texture-section: 0.015;
 }
 
 [data-theme='dark'] {
@@ -36,8 +33,6 @@
   --color-paper: 0 0 0;
   --color-muted: 163 163 163;
   --color-line: 48 48 48;
-
-  --texture-section: 0.03;
 }
 
 /* Let the UA render scrollbars and form controls to match. */
@@ -102,29 +97,9 @@ body {
   display: block;
 }
 
-/* --- Line-pattern layer (non-photo areas only) ------------- */
-/* Light sections stack a faint horizontal line pattern. #hero is
-   excluded so its photograph renders clean. */
-main > section:not(.bg-ink):not(#hero) {
-  position: relative;
-}
+/* Hero anchors its own paper wash overlay. */
 #hero {
   position: relative;
-}
-main > section:not(.bg-ink):not(#hero)::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 1px,
-    rgb(var(--color-ink)) 1px,
-    rgb(var(--color-ink)) 2px
-  );
-  background-size: 100% 4px;
-  opacity: var(--texture-section);
 }
 
 #contact {

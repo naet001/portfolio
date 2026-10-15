@@ -74,8 +74,8 @@ npm run dev          # same, with --watch
   `rgb(var(--color-paper))`. This includes textures, focus rings, the hero overlay, and
   `.square-motif`. The contact/footer blocks use the *paper* token for their texture and focus
   ring because they carry `bg-ink text-paper` and therefore invert with the page.
-- Line-pattern opacity is a per-theme variable (`--texture-section`) because the same line
-  weight reads differently on black. There is no grain/noise layer.
+- There is no global texture layer. The grain (feTurbulence noise) and the ruled-line
+  pattern were both removed; sections are flat. Photo legibility washes are the only overlays.
 - Sections with `bg-ink text-paper` (contact, footer) intentionally become **light** blocks on
   the dark page. That's the design working, not a bug — do not "fix" it with dark: overrides.
 - The 200ms cross-fade is scoped to a temporary `data-theme-switch` attribute added by JS, so
