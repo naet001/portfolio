@@ -1,0 +1,11 @@
+# Dev-only files that are not part of the deployed site.
+# They stay in git, they just aren't uploaded to Vercel.
+
+AGENTS.md
+README.md
+.git
+.gitignore
+
+# NOTE: do not ignore package.json, package-lock.json, css/input.css,
+# or tailwind.config.js — the Vercel build step needs all four to
+# regenerate css/main.css from source.

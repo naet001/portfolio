@@ -96,6 +96,27 @@ There is no test suite, linter, or formatter — verify visually in both themes.
 - Hover: `sweep-ink hover:text-paper` on paper, `sweep-paper hover:text-ink` on ink; use `group` for row sweeps.
 - Commit messages: conventional-commit subject + `-` bullet list of what/why.
 
+## Deploy (Vercel)
+
+`vercel.json` is checked in and is the source of truth. Production builds run on Vercel:
+
+```bash
+npm install        # installCommand
+npm run build      # buildCommand — regenerates css/main.css from css/input.css
+```
+
+- `outputDirectory` is the repo root — Vercel serves the working tree directly, so all asset
+  paths in `index.html` and `css/input.css` stay **relative** (no `/css/main.css`).
+- Vercel recompiles the CSS on every deploy, so the committed `css/main.css` can never drift in
+  production. It is still tracked so `file://` previews and GitHub Pages keep working.
+- `.vercelignore` keeps `AGENTS.md` and `README.md` out of the upload. Don't add
+  `package.json`, `package-lock.json`, `css/input.css`, or `tailwind.config.js` to it — the
+  remote build needs all four.
+- `vercel.json` also sets cache headers: `css/`, `js/`, and `public/` revalidate per request;
+  `images/` are content-stable, so they get a one-year `immutable` cache.
+
+Push to `main` and Vercel deploys from `origin`.
+
 ## License
 
 Private portfolio. All rights reserved.

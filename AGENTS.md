@@ -45,6 +45,21 @@ npm run dev          # same, with --watch
   tracked, and the live site loads it directly.
 - There is **no test suite, linter, or formatter**. Don't invent one; verify visually.
 
+## Deploy (Vercel)
+
+- Production is **Vercel**, connected to `origin/main`. `vercel.json` is the source of truth:
+  `framework: null`, `installCommand: npm install`, `buildCommand: npm run build`,
+  `outputDirectory: "."`, plus cache and security headers.
+- Vercel **rebuilds `css/main.css` from `css/input.css` on every deploy**, so the tracked
+  copy can never drift in production. It is still committed so local `file://` previews and
+  GitHub Pages work.
+- `.vercelignore` keeps `AGENTS.md` and `README.md` out of the upload. **Never add
+  `package.json`, `package-lock.json`, `css/input.css`, or `tailwind.config.js` to it** —
+  the remote build needs all four to compile the CSS.
+- Because `outputDirectory` is the repo root, Vercel serves the working tree directly. Do not
+  introduce root-absolute paths (`/css/main.css`); all asset references stay relative so the
+  site works at any host and path.
+
 ## Conventions
 
 **Tailwind**
