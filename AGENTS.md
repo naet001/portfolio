@@ -136,8 +136,13 @@ npm run dev          # same, with --watch
   `philip-oroni-VfOGf5RWkeg-unsplash.jpg` (hero + contact) and
   `milad-fakurian-XnkLo3xc960-unsplash.jpg`; `istockphoto-2187983015-1024x1024.jpg` is
   referenced by nothing. Grep `url(` in `css/input.css` before assuming an asset is in use.
-- Content is hardcoded placeholder-ish copy (companies, project names, star counts). If asked
-  to make content real, only replace strings — do not restructure the markup.
+- Site copy is **real**, sourced from `public/Isaac-Hayab-CV-1.pdf`. The CV is the source of
+  truth for the hero, About, projects, and experience sections — when it changes, update
+  `index.html` and re-render `og.png`. Replace strings only; do not restructure the markup.
+- Identity facts are verified, not inferred. Email is `hnommoh@gmail.com` and the GitHub handle
+  is `naet001` (confirmed by the user). The CV prints `naiih001` and
+  `naiih001.github.io` — those are **typos in the CV**, not the site. Don't "fix" the site to
+  match them.
 - The canonical origin `https://nommoh-hayab.vercel.app/` is duplicated across `index.html`
   (canonical, `og:url`, JSON-LD `url`/`@id`), `robots.txt`, and `sitemap.xml`. If the domain
   changes, update all of them together — a stale canonical is worse than none.
