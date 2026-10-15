@@ -26,11 +26,8 @@
   --color-muted: 82 82 82;
   --color-line: 229 229 229;
 
-  /* Opacity of the remaining texture layers. Photo sections (#hero,
-     #contact) are excluded from all grain/pattern, so there is no
-     inverted-photo token anymore. */
+  /* Opacity of the line-pattern layer. There is no grain layer. */
   --texture-section: 0.015;
-  --texture-noise: 0.02;
 }
 
 [data-theme='dark'] {
@@ -41,7 +38,6 @@
   --color-line: 48 48 48;
 
   --texture-section: 0.03;
-  --texture-noise: 0.03;
 }
 
 /* Let the UA render scrollbars and form controls to match. */
@@ -106,38 +102,14 @@ body {
   display: block;
 }
 
-/* --- Global texture layers (non-photo areas only) ---------- */
-/* Body gets paper-grain noise and light sections stack a line
-   pattern. Photo sections (#hero, #contact) sit above the grain
-   and skip the line pattern, so their images render clean. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  opacity: var(--texture-noise);
-}
-
-/* The noise is black; invert it so it reads on a dark page. */
-[data-theme='dark'] body::before {
-  filter: invert(1);
-}
-
-/* Horizontal lines on light sections without photos — #hero is
+/* --- Line-pattern layer (non-photo areas only) ------------- */
+/* Light sections stack a faint horizontal line pattern. #hero is
    excluded so its photograph renders clean. */
 main > section:not(.bg-ink):not(#hero) {
   position: relative;
 }
-/* Photo sections sit above the global grain layer so their
-   images render clean — no noise, no line pattern. */
-#hero,
-#contact {
+#hero {
   position: relative;
-  isolation: isolate;
-  z-index: 2;
 }
 main > section:not(.bg-ink):not(#hero)::after {
   content: '';
@@ -155,8 +127,6 @@ main > section:not(.bg-ink):not(#hero)::after {
   opacity: var(--texture-section);
 }
 
-/* Contact photo: stacked wash + image keeps `bg-ink` as the fallback
-   while the image loads. No grain or line pattern — clean photo. */
 #contact {
   position: relative;
   isolation: isolate;
