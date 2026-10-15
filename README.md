@@ -128,11 +128,26 @@ four places, all of which must stay in sync:
 | `robots.txt` | `Allow: /` plus the `Sitemap:` line |
 | `sitemap.xml` | The one URL, its `lastmod`, and `changefreq` |
 
-- **Open Graph / Twitter Card** — title, description, URL, locale. `twitter:card` is
-  `summary`, not `summary_large_image`, because there is **no `og:image`**: the photos are
-  CSS background-images, so there is no shareable asset to point at. Links render as
-  text-only cards. Dropping in a 1200x630 card is the single highest-impact SEO/social win
-  still available.
+- **Open Graph / Twitter Card** — title, description, URL, locale, and image. `twitter:card` is
+  `summary_large_image`, backed by `og.png`: a 1200×630 card rendered from `og/card.html`
+  using the site's own typefaces, so links show a proper visual on LinkedIn, WhatsApp, X, and
+  iMessage instead of a bare text row.
+- **Regenerating the card** — edit `og/card.html`, then:
+
+  ```bash
+  cd og
+  chromium --headless=new --no-sandbox --hide-scrollbars \
+    --window-size=1200,630 --virtual-time-budget=10000 \
+    --screenshot=../og.png "file://$PWD/card.html"
+  ```
+
+  Commit the regenerated `og.png` alongside the HTML change. The card's `body` sets an
+  explicit `height: 630px` and needs `box-sizing: border-box`, or the padding pushes the
+  footer row out of frame. `og/` is in `.vercelignore`, so the source never ships — only the
+  rendered PNG at the repo root does.
+- **Preview caching** — LinkedIn and Facebook cache scraped images hard. After replacing
+  `og.png`, use their debugger tools to force a re-scrape; a query string on `og:image` will
+  not defeat it.
 - **JSON-LD** — a `schema.org/Person` block describing name, job title, email, and `sameAs`
   links to GitHub and LinkedIn, which lets search engines tie those profiles to one identity.
   `knowsAbout` mirrors the hero copy; update it if the positioning changes.

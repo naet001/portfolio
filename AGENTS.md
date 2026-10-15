@@ -132,15 +132,20 @@ npm run dev          # same, with --watch
 ## Gotchas
 
 - `css/main.css` is committed build output — never hand-edit it; edit `css/input.css`.
-- The `images/` directory is currently unreferenced; removing it is out of scope, but don't
-  assume assets exist.
+- `images/` is mostly referenced, but not entirely. `css/input.css` uses
+  `philip-oroni-VfOGf5RWkeg-unsplash.jpg` (hero + contact) and
+  `milad-fakurian-XnkLo3xc960-unsplash.jpg`; `istockphoto-2187983015-1024x1024.jpg` is
+  referenced by nothing. Grep `url(` in `css/input.css` before assuming an asset is in use.
 - Content is hardcoded placeholder-ish copy (companies, project names, star counts). If asked
   to make content real, only replace strings — do not restructure the markup.
 - The canonical origin `https://nommoh-hayab.vercel.app/` is duplicated across `index.html`
   (canonical, `og:url`, JSON-LD `url`/`@id`), `robots.txt`, and `sitemap.xml`. If the domain
   changes, update all of them together — a stale canonical is worse than none.
-- There is intentionally **no `og:image`**. The photos are CSS background-images, so there is
-  no shareable asset; `twitter:card` is `summary` for that reason. Don't add a large-image card
-  without an actual 1200x630 file.
+- The social card is `og.png` at the repo root, rendered from `og/card.html` with headless
+  Chromium. Edit the HTML, re-render, and commit the PNG together — the metadata points at the
+  absolute URL `https://nommoh-hayab.vercel.app/og.png`, and `og/image:width` and
+  `og:image:height` must stay 1200x630 to match. `og/` itself is in `.vercelignore`.
+- The `card.html` body sets an explicit `height: 630px`; it needs `box-sizing: border-box` or
+  the padding pushes the footer row out of frame.
 - `favicon.svg` draws its letterforms as geometry with a `fill=` presentation-attribute fallback,
   so it still renders if a browser strips the `<style>` block. Keep both.

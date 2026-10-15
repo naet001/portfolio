@@ -7,11 +7,10 @@
   <meta name="description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
 
   <!-- Canonical + social preview.
-       og:image is deliberately absent: the photos are CSS background-images,
-       not <img> assets, so there is no shareable image to point at yet. A
-       1200x630 card would materially improve link previews on LinkedIn,
-       WhatsApp, X, and iMessage — add one and flip twitter:card to
-       summary_large_image when you do. -->
+       og:image points at og.png, rendered from og/card.html at 1200x630.
+       That URL must be absolute — crawlers will not resolve a relative one.
+       After changing the card, regenerate the PNG and re-push; several
+       platforms cache previews aggressively and ignore query-string busting. -->
   <link rel="canonical" href="https://nommoh-hayab.vercel.app/" />
   <link rel="sitemap" type="application/xml" href="sitemap.xml" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -22,11 +21,17 @@
   <meta property="og:url" content="https://nommoh-hayab.vercel.app/" />
   <meta property="og:title" content="Nommoh Hayab — Backend Engineer" />
   <meta property="og:description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
+  <meta property="og:image" content="https://nommoh-hayab.vercel.app/og.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Nommoh Hayab — Backend Engineer. APIs, data pipelines, and infrastructure." />
 
-  <!-- summary, not summary_large_image: there is no image to expand. -->
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Nommoh Hayab — Backend Engineer" />
   <meta name="twitter:description" content="Backend engineer building reliable, scalable systems — APIs, data pipelines, and infrastructure. Selected projects, experience, and contact." />
+  <meta name="twitter:image" content="https://nommoh-hayab.vercel.app/og.png" />
+  <meta name="twitter:image:alt" content="Nommoh Hayab — Backend Engineer. APIs, data pipelines, and infrastructure." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
