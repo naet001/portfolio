@@ -126,7 +126,7 @@ four places, all of which must stay in sync:
 |---|---|
 | `index.html` | `<link rel="canonical">`, `og:url`, and the JSON-LD `url` / `@id` |
 | `robots.txt` | `Allow: /` plus the `Sitemap:` line |
-| `sitemap.xml` | The one URL, its `lastmod`, and `changefreq` |
+| `sitemap.xml` | The one URL and its `lastmod` |
 
 - **Open Graph / Twitter Card** — title, description, URL, locale, and image. `twitter:card` is
   `summary_large_image`, backed by `og.png`: a 1200×630 card rendered from `og/card.html`
@@ -152,7 +152,7 @@ four places, all of which must stay in sync:
   links to GitHub and LinkedIn, which lets search engines tie those profiles to one identity.
   `knowsAbout` mirrors the hero copy; update it if the positioning changes.
 - **`sitemap.xml` `lastmod`** — bump the date when page content meaningfully changes. Google
-  largely ignores it, but it costs nothing to be accurate.
+  uses this as a hint, so keep it accurate.
 - **Heading structure** is already correct: one `<h1>`, then `h2` per section and `h3` per
   role. Keep it that way — don't promote section titles to `h1`.
 
