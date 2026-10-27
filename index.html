@@ -175,19 +175,24 @@
         <p class="hero__lead">Hello, I’m Nommoh; I build payment systems, APIs, and services behind them.</p>
         <div class="hero__actions" role="group" aria-label="CV and contact">
           <a class="action-link action-link--primary" href="public/Isaac-Hayab-CV-1.pdf" download="Isaac-Hayab-CV-1.pdf">
-            <span class="action-link__meta">CV · PDF</span>
-            <span class="action-link__row">
+            <span class="action-link__head">
               <span class="action-link__title">Download CV</span>
+              <span class="action-link__meta">File</span>
+            </span>
+            <span class="action-link__row">
+              <span class="action-link__address">Isaac-Hayab.pdf</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </span>
           </a>
           <a class="action-link" href="mailto:hnommoh@gmail.com">
-            <span class="action-link__meta">Direct contact</span>
-            <span class="action-link__row">
+            <span class="action-link__head">
               <span class="action-link__title">Email Nommoh</span>
+              <span class="action-link__meta">Mail</span>
+            </span>
+            <span class="action-link__row">
+              <span class="action-link__address">hnommoh@gmail.com</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </span>
-            <span class="action-link__address">hnommoh@gmail.com</span>
           </a>
         </div>
         <div class="work" aria-label="Selected work">
@@ -244,14 +249,33 @@
             <p>13 tools, SQLite-backed sessions, headless mode, and 19 architecture decision records.</p>
             <a class="case__link" href="https://github.com/naet001/rem" target="_blank" rel="noopener noreferrer">Read the rem source</a>
           </div>
-          <div class="case__panels graphite" aria-label="How rem works">
-            <div class="pane">
-              <h3 class="pane__label">A request enters</h3>
-              <ol class="turn"><li>Prompt and repository context</li><li>Model selects a tool</li><li>Tool runs against the project</li><li>Result returns to the loop</li></ol>
-            </div>
-            <div class="pane">
-              <h3 class="pane__label">The session stays</h3>
-              <ul class="tools"><li>Read and search</li><li>Edit and write</li><li>Run commands</li><li>Track changes</li><li>SQLite session history</li></ul>
+          <div class="session graphite" aria-label="How rem works">
+            <div class="session__cols">
+              <section class="pane">
+                <header class="pane__head">
+                  <h3 class="pane__label">A request enters</h3>
+                  <span class="pane__count">04 steps</span>
+                </header>
+                <ol class="turn">
+                  <li><span class="turn__n" aria-hidden="true">01</span><span>Prompt and repository context</span></li>
+                  <li><span class="turn__n" aria-hidden="true">02</span><span>Model selects a tool</span></li>
+                  <li><span class="turn__n" aria-hidden="true">03</span><span>Tool runs against the project</span></li>
+                  <li><span class="turn__n" aria-hidden="true">04</span><span>Result returns to the loop</span></li>
+                </ol>
+              </section>
+              <section class="pane">
+                <header class="pane__head">
+                  <h3 class="pane__label">The session stays</h3>
+                  <span class="pane__count">13 tools</span>
+                </header>
+                <ul class="tools">
+                  <li>Read and search</li>
+                  <li>Edit and write</li>
+                  <li>Run commands</li>
+                  <li>Track changes</li>
+                  <li class="tools__store">SQLite session history</li>
+                </ul>
+              </section>
             </div>
           </div>
         </div>
