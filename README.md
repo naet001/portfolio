@@ -29,10 +29,10 @@ The canonical spec is [`../STYLE.md`](../STYLE.md); [`../FONTS.md`](../FONTS.md)
 | Layer | Detail |
 |---|---|
 | Markup | `index.html` — semantic HTML5, Tailwind content scan covers this file only |
-| Styling | `css/input.css` → `css/main.css` via Tailwind CLI; hand-written base resets, focus rings, photo treatments, sweep hover |
+| Styling | `css/input.css` → `css/main.css` via Tailwind CLI; hand-written base resets, focus rings, sweep hover |
 | Script | `js/main.js` — ES5 IIFEs, no deps: theme toggle + mobile nav + header scroll behavior |
 | Fonts | Google Fonts — Instrument Serif, DM Sans, IBM Plex Mono |
-| Images | `images/` + `public/Isaac-Hayab-CV-1.pdf` (resume download) |
+| Images | `public/Isaac-Hayab-CV-1.pdf` (resume download); `images/` holds unused stock photos |
 
 ## Project Structure
 
@@ -43,7 +43,7 @@ portfolio/                  # ← git root
 │   ├── input.css           # source — @tailwind directives + custom CSS
 │   └── main.css            # generated output (committed, do not hand-edit)
 ├── js/main.js              # vanilla JS enhancements
-├── images/                 # hero / contact photos
+├── images/                 # unused stock photos (not referenced)
 ├── public/                 # Isaac-Hayab-CV-1.pdf
 ├── tailwind.config.js      # color/font/width tokens
 ├── package.json            # tailwindcss 3.4 devDependency
@@ -94,6 +94,7 @@ There is no test suite, linter, or formatter — verify visually in both themes.
 - Headlines: `font-serif tracking-tight`, viewport-sized (`text-[13vw] md:text-[9rem]`).
 - Body: `text-ink/80 leading-relaxed`.
 - Hover: `sweep-ink hover:text-paper` on paper, `sweep-paper hover:text-ink` on ink; use `group` for row sweeps.
+- Page texture: a single 24px dot grid on `body` (ink token at 14%, inverts with the theme). Sections stay flat; don't add local patterns.
 - Commit messages: conventional-commit subject + `-` bullet list of what/why.
 
 ## Deploy (Vercel)

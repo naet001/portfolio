@@ -21,7 +21,7 @@ portfolio/
 │   ├── input.css         # Source CSS: @tailwind directives + global non-utility styles
 │   └── main.css          # GENERATED build output — do not edit by hand
 ├── js/main.js            # Vanilla JS: theme toggle + mobile nav (separate IIFEs)
-├── images/               # Unused stock assets (not currently referenced in markup)
+├── images/               # Unused stock assets (not referenced anywhere)
 ├── tailwind.config.js    # Token aliases (font/width) + CSS-variable color channels
 ├── package.json          # Tailwind CLI only
 └── .gitignore
@@ -86,11 +86,14 @@ npm run dev          # same, with --watch
   the page flashes the wrong theme). With no stored choice it follows
   `prefers-color-scheme`; an explicit toggle is stored in `localStorage.theme` and then wins.
 - In `css/input.css`, never hardcode `#000`/`#fff` — use `rgb(var(--color-ink))` /
-  `rgb(var(--color-paper))`. This includes textures, focus rings, the hero overlay, and
+  `rgb(var(--color-paper))`. This includes textures, focus rings, and
   `.square-motif`. The contact/footer blocks use the *paper* token for their texture and focus
   ring because they carry `bg-ink text-paper` and therefore invert with the page.
-- There is no global texture layer. The grain (feTurbulence noise) and the ruled-line
-  pattern were both removed; sections are flat. Photo legibility washes are the only overlays.
+- The only global texture is the dot grid on `body`: a 24px tiled
+  `radial-gradient` in the ink token at 14% alpha, so dark mode inverts it automatically.
+  Sections stay flat and transparent so the grid reads through; the
+  `bg-ink` contact and footer blocks cover it. Don't add per-section patterns or further
+  texture layers.
 - Sections with `bg-ink text-paper` (contact, footer) intentionally become **light** blocks on
   the dark page. That's the design working, not a bug — do not "fix" it with dark: overrides.
 - The 200ms cross-fade is scoped to a temporary `data-theme-switch` attribute added by JS, so
@@ -132,10 +135,9 @@ npm run dev          # same, with --watch
 ## Gotchas
 
 - `css/main.css` is committed build output — never hand-edit it; edit `css/input.css`.
-- `images/` is mostly referenced, but not entirely. `css/input.css` uses
-  `philip-oroni-VfOGf5RWkeg-unsplash.jpg` (hero + contact) and
-  `milad-fakurian-XnkLo3xc960-unsplash.jpg`; `istockphoto-2187983015-1024x1024.jpg` is
-  referenced by nothing. Grep `url(` in `css/input.css` before assuming an asset is in use.
+- No `images/` asset is referenced at the moment: the hero and contact background photos were
+  removed, and the folder is kept as a source pool. Grep `url(` in `css/input.css` before
+  assuming an asset is in use.
 - Site copy is **real**, sourced from `public/Isaac-Hayab-CV-1.pdf`. The CV is the source of
   truth for the hero, About, projects, and experience sections — when it changes, update
   `index.html` and re-render `og.png`. Replace strings only; do not restructure the markup.

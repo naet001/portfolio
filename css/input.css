@@ -7,7 +7,7 @@
    Design tokens live in tailwind.config.js, which reads the
    CSS variables defined below. This file holds only what
    Tailwind utilities don't cover: base resets, focus states,
-   photo treatments, and the one motif.
+   hover sweeps, and the one motif.
 
    THEMING
    Light is the default in `:root`. `[data-theme="dark"]` is
@@ -53,6 +53,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* --- Page substrate: dot grid ------------------------------ */
+/* The one global texture: a dot grid painted on the page itself,
+   so it reads through the transparent sections and is covered by
+   the opaque contact/footer blocks. Dots use the ink token at 18%,
+   so dark mode inverts the grid automatically — no separate
+   dark-mode rule. */
+body {
+  background-image: radial-gradient(
+    circle at center,
+    rgb(var(--color-ink) / 0.18) 2.5px,
+    transparent 2.5px
+  );
+  background-size: 28px 28px;
+  background-repeat: repeat;
+}
+
 /* Brief colour cross-fade when the theme is toggled. The
    attribute is added by JS for the duration of one switch and
    removed immediately after, so ordinary hover transitions
@@ -95,99 +111,6 @@ body {
 }
 #menu-btn[aria-expanded='true'] .menu-icon-close {
   display: block;
-}
-
-/* Hero anchors its own paper wash overlay. */
-#hero {
-  position: relative;
-}
-
-#contact {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  /* Bold photo bleed: stacked ink wash + photo keeps `bg-ink`
-     as the fallback while the image loads. The wash uses the
-     ink token so it inverts with the theme like everything else.
-     Source is already monochrome, so no grayscale filter needed. */
-  background-image:
-    linear-gradient(rgb(var(--color-ink) / 0.5), rgb(var(--color-ink) / 0.5)),
-    url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-/* Dark mode: ink is white, so the same photo needs a heavier
-   white wash — otherwise paper (black) type fails on mid-gray.
-   Base stays uniform so mobile (text over image center) is safe;
-   on md+ it becomes directional like the hero: heavy behind the
-   left text, lifting to reveal the form on the right. */
-[data-theme='dark'] #contact {
-  background-image:
-    linear-gradient(rgb(var(--color-ink) / 0.72), rgb(var(--color-ink) / 0.72)),
-    url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
-}
-@media (min-width: 768px) {
-  html[data-theme='dark'] #contact {
-    background-image:
-      linear-gradient(
-        90deg,
-        rgb(var(--color-ink) / 0.88) 0%,
-        rgb(var(--color-ink) / 0.72) 35%,
-        rgb(var(--color-ink) / 0.35) 65%,
-        rgb(var(--color-ink) / 0.15) 100%
-      ),
-      url('../images/philip-oroni-VfOGf5RWkeg-unsplash.jpg');
-    background-position: 65% center;
-  }
-}
-/* #contact content sits above the photo; no pattern layer. */
-#contact > div {
-  position: relative;
-  z-index: 1;
-}
-
-/* --- Hero: photograph bleeds in behind the type ------------ */
-/* Desaturated to keep the monochrome system; the paper
-   overlay keeps display type at full ink contrast. Base wash
-   is uniform so mobile (text over image center) and dark mode
-   stay safe. On md+ light mode it becomes directional: heavy
-   behind the left text, lifting to reveal the sculpture right. */
-#hero {
-  background-image: url('../images/milad-fakurian-XnkLo3xc960-unsplash.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  filter: grayscale(1);
-}
-#hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-color: rgb(var(--color-paper));
-  opacity: 0.82;
-}
-@media (min-width: 768px) {
-  html[data-theme='light'] #hero {
-    background-position: 65% center;
-  }
-  html[data-theme='light'] #hero::before {
-    background-image: linear-gradient(
-      90deg,
-      rgb(var(--color-paper) / 0.88) 0%,
-      rgb(var(--color-paper) / 0.72) 35%,
-      rgb(var(--color-paper) / 0.35) 65%,
-      rgb(var(--color-paper) / 0.15) 100%
-    );
-    background-color: transparent;
-    opacity: 1;
-  }
-}
-#hero > * {
-  position: relative;
-  z-index: 1;
 }
 
 /* --- Focus: thick offset outline, per design system -------- */
