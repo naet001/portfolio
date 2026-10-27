@@ -1,5 +1,9 @@
 node_modules/
 
+# Original 1080p60 screen recordings (~64MB). They stay local: only the
+# encoded set in images/rem/web/ is committed and deployed.
+images/rem/masters/
+
 # css/main.css stays tracked even though Vercel regenerates it with
 # `npm run build`. Committing it keeps local file:// previews and
 # GitHub Pages working. Always rebuild before committing CSS changes.

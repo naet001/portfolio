@@ -2,7 +2,7 @@
 
 ## Overview
 
-Single-page static portfolio site for **Nommoh Hayab (backend engineer)**. Plain HTML +
+Single-page static portfolio site for **Nommoh Hayab (AI engineer)**. Plain HTML +
 Tailwind CSS utility classes, with a small amount of hand-written CSS in `css/input.css`
 for base resets, focus rings, and texture layers. No framework, no bundler, no client-side
 router — the whole site is one HTML file plus a tiny vanilla-JS enhancement.
@@ -21,7 +21,11 @@ portfolio/
 │   ├── input.css         # Source CSS: @tailwind directives + global non-utility styles
 │   └── main.css          # GENERATED build output — do not edit by hand
 ├── js/main.js            # Vanilla JS: theme toggle + mobile nav (separate IIFEs)
-├── images/               # Unused stock assets (not referenced anywhere)
+├── images/
+│   └── rem/
+│       ├── masters/      # 1080p60 originals — git-ignored and vercel-ignored
+│       └── web/          # GENERATED 720p30 set + posters: .v1.{vp9.webm,mp4}, .v1.webp
+├── tools/encode-rem.sh   # rebuilds images/rem/web/ (sheets | encode | sizes); not deployed
 ├── tailwind.config.js    # Token aliases (font/width) + CSS-variable color channels
 ├── package.json          # Tailwind CLI only
 └── .gitignore
@@ -135,9 +139,13 @@ npm run dev          # same, with --watch
 ## Gotchas
 
 - `css/main.css` is committed build output — never hand-edit it; edit `css/input.css`.
-- No `images/` asset is referenced at the moment: the hero and contact background photos were
-  removed, and the folder is kept as a source pool. Grep `url(` in `css/input.css` before
-  assuming an asset is in use.
+- `images/` is mostly an unused source pool (the hero and contact background photos were removed),
+  **except `images/rem/web/`** — those are the four `rem` recordings the Projects section plays.
+  Grep `url(` in `css/input.css` and `data-src-` in `index.html` before assuming an asset is in use.
+- The rem recordings are versioned by filename (`rem-one.v1.mp4`). `/images/(.*)` is served
+  `max-age=31536000, immutable`, so **a published clip can never be changed in place** — re-encode
+  with `VER=v2` in `tools/encode-rem.sh` and update every reference in `index.html`. The 1080p60
+  originals live in `images/rem/masters/`, which is both git-ignored and vercel-ignored.
 - Site copy is **real**, sourced from `public/Isaac-Hayab-CV-1.pdf`. The CV is the source of
   truth for the hero, About, projects, and experience sections — when it changes, update
   `index.html` and re-render `og.png`. Replace strings only; do not restructure the markup.
@@ -154,5 +162,5 @@ npm run dev          # same, with --watch
   `og:image:height` must stay 1200x630 to match. `og/` itself is in `.vercelignore`.
 - The `card.html` body sets an explicit `height: 630px`; it needs `box-sizing: border-box` or
   the padding pushes the footer row out of frame.
-- `favicon.svg` draws its letterforms as geometry with a `fill=` presentation-attribute fallback,
-  so it still renders if a browser strips the `<style>` block. Keep both.
+- The icon is `favicon.ico` at the repo root (16, 32 and 48px, 32-bit). It is referenced twice:
+  the `link rel="icon"` in `<head>` and the header wordmark `<img>`. There is no `favicon.svg`.

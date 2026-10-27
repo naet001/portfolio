@@ -10,6 +10,13 @@ README.md
 # only the HTML used to generate it is hidden.
 og/
 
+# Large original recordings. outputDirectory is the repo root, so these would
+# otherwise ship alongside the site — only images/rem/web/ is deployed.
+images/rem/masters/
+
+# Build-time helper that produces images/rem/web/. Not part of the served site.
+tools/
+
 # NOTE: do not ignore package.json, package-lock.json, css/input.css,
 # or tailwind.config.js — the Vercel build step needs all four to
 # regenerate css/main.css from source.

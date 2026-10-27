@@ -1,6 +1,6 @@
 # Nommoh Hayab — Portfolio
 
-Single-page static portfolio for **Nommoh Isaac Hayab**, backend engineer. Strict Minimalist Monochrome design — pure black & white, oversized serif display type, hairline rules, zero radius, flat surfaces.
+Single-page static portfolio for **Nommoh Isaac Hayab**, AI engineer. Strict Minimalist Monochrome design — pure black & white, oversized serif display type, hairline rules, zero radius, flat surfaces.
 
 **Stack:** HTML5 + Tailwind CSS v3.4 + vanilla JS. No framework, no bundler, no client-side router. The entire site is one `index.html` plus a tiny enhancement script.
 
@@ -12,6 +12,7 @@ Single-page static portfolio for **Nommoh Isaac Hayab**, backend engineer. Stric
 - **Dark / light theme** — pure inversion (`ink ↔ paper`), persisted in `localStorage`, seeded before first paint from an inline bootstrap in `<head>`, follows `prefers-color-scheme` when no choice is stored.
 - **Sweep hover** — left-to-right fill wipe (`sweep-ink` / `sweep-paper` in `css/input.css`), not an instant inversion.
 - **Responsive** — 12-column grid, 72rem max-width container (`max-w-site`), mobile nav with `aria-expanded` toggle.
+- **rem recordings** — a graphite band in Projects that auto-advances through four clips. No `src` in the HTML: the codec is chosen with `canPlayType`, and a clip only loads while the band is on screen, so the first paint moves zero video bytes. Hover, focus, a hidden tab, or scrolling away all hold it; the Auto button is the WCAG 2.2.2 stop control; clicking a clip swaps rotation for native player controls.
 - **Accessible** — skip link, `:focus-visible` outlines (3px / 3px offset, inverted on dark blocks), ≥44px touch targets, `prefers-reduced-motion`.
 
 ## Design System — Minimalist Monochrome
@@ -30,9 +31,10 @@ The canonical spec is [`../STYLE.md`](../STYLE.md); [`../FONTS.md`](../FONTS.md)
 |---|---|
 | Markup | `index.html` — semantic HTML5, Tailwind content scan covers this file only |
 | Styling | `css/input.css` → `css/main.css` via Tailwind CLI; hand-written base resets, focus rings, sweep hover |
-| Script | `js/main.js` — ES5 IIFEs, no deps: theme toggle + mobile nav + header scroll behavior |
+| Script | `js/main.js` — ES5 IIFEs, no deps: theme toggle + mobile nav + header scroll behavior + the rem clip slider |
 | Fonts | Google Fonts — Instrument Serif, DM Sans, IBM Plex Mono |
-| Images | `public/Isaac-Hayab-CV-1.pdf` (resume download); `images/` holds unused stock photos |
+| Media | `images/rem/web/` — four 720p30 recordings of `rem`, encoded by `tools/encode-rem.sh` (VP9 + H.264 + WebP posters). The 1080p60 originals in `images/rem/masters/` are ignored by both git and Vercel. |
+| Files | `public/Isaac-Hayab-CV-1.pdf` (resume download); the rest of `images/` is an unused stock pool |
 
 ## Project Structure
 
@@ -43,7 +45,11 @@ portfolio/                  # ← git root
 │   ├── input.css           # source — @tailwind directives + custom CSS
 │   └── main.css            # generated output (committed, do not hand-edit)
 ├── js/main.js              # vanilla JS enhancements
-├── images/                 # unused stock photos (not referenced)
+├── images/
+│   └── rem/
+│       ├── masters/        # 1080p60 originals (git-ignored + vercel-ignored)
+│       └── web/            # encoded 720p30 set + posters, committed
+├── tools/encode-rem.sh     # rebuilds images/rem/web/ (not deployed)
 ├── public/                 # Isaac-Hayab-CV-1.pdf
 ├── tailwind.config.js      # color/font/width tokens
 ├── package.json            # tailwindcss 3.4 devDependency
@@ -115,6 +121,10 @@ npm run build      # buildCommand — regenerates css/main.css from css/input.cs
   remote build needs all four.
 - `vercel.json` also sets cache headers: `css/`, `js/`, and `public/` revalidate per request;
   `images/` are content-stable, so they get a one-year `immutable` cache.
+- Because of that immutable cache, **a published clip can never be replaced in place.** Every
+  encode carries a version token in its filename (`rem-one.v1.mp4`). To re-encode, run
+  `VER=v2 tools/encode-rem.sh encode` and update every `v1` reference in `index.html` — never
+  overwrite a file that is already live.
 
 Push to `main` and Vercel deploys from `origin`.
 
