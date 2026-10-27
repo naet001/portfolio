@@ -108,51 +108,18 @@
   });
 })();
 
-// Header: transparent over the hero, opaque once scrolled past it
+// Retract the section bar after the hero while keeping the banner available.
 (function () {
   var header = document.getElementById('top');
   var hero = document.getElementById('hero');
   if (!header || !hero) return;
 
-  // Solid when the header (0..height in viewport) sits entirely
-  // below the hero, i.e. it starts covering the section after it.
   function update() {
     var past = window.pageYOffset >= hero.offsetHeight - header.offsetHeight;
-    header.classList.toggle('is-solid', past);
+    header.classList.toggle('is-retracted', past);
   }
 
   window.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update);
   update();
-})();
-
-// Ambient lighting: run only while the footer is visible.
-(function () {
-  var surfaces = document.querySelectorAll('.ambient-footer');
-  if (!surfaces.length || !window.IntersectionObserver) return;
-
-  var inView = [];
-
-  function update() {
-    for (var i = 0; i < surfaces.length; i++) {
-      surfaces[i].classList.toggle('is-visible', inView[i] && !document.hidden);
-    }
-  }
-
-  var observer = new IntersectionObserver(function (entries) {
-    for (var i = 0; i < entries.length; i++) {
-      for (var j = 0; j < surfaces.length; j++) {
-        if (entries[i].target === surfaces[j]) {
-          inView[j] = entries[i].isIntersecting;
-          break;
-        }
-      }
-    }
-    update();
-  });
-
-  document.addEventListener('visibilitychange', update);
-  for (var j = 0; j < surfaces.length; j++) {
-    observer.observe(surfaces[j]);
-  }
 })();

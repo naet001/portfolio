@@ -1,78 +1,558 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Hallmark · shape: Letter · genre: modern-minimal · theme: Cobalt (deal 1/3, seed 0e8f1ec4) · redesign: full · job: hire
+ * hero: Index · nav: banner over a retracting bar · footer: letter close · imagery: none · signature: the production record ledger
+ * axes: light/grotesk-sans/cool · posture: restrained · modes: light+dark · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E3 S5 R4 V4 · weakest: E, the ledger must carry screen one without the ASCII field; omitted the field and kept one graphite band
+ * dropped .ambient-footer, .square-motif · dropped 3 dead project URLs (protask, payflow, e-commerce-backend) · dropped the profile README as a project
+ * built: Hallmark · redesign: full · kept every anchor, the CV, email, GitHub, LinkedIn and the theme toggle */
+/* Hallmark · dismissed 46a · the user total is stated in the supplied CV */
+/* Hallmark · finish: CV/contact rail replaces the lone button; light/dark checked at 375px, light at 320px and desktop. */
+@import url("./tokens.css");
+@import url("./base.css");
 
-/* ============================================================
-   Minimalist Monochrome — global styles
-   Design tokens live in tailwind.config.js, which reads the
-   CSS variables defined below. This file holds only what
-   Tailwind utilities don't cover: base resets, focus states,
-   hover sweeps, and the one motif.
+.skip {
+  position: fixed;
+  inset-inline-start: var(--space-md);
+  top: calc(-1 * var(--space-3xl));
+  z-index: var(--z-toast);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+.skip:focus-visible { top: var(--space-md); }
 
-   THEMING
-   Light is the default in `:root`. `[data-theme="dark"]` is
-   applied to <html> by js/main.js before first paint. Because
-   the palette is strictly black & white, the dark theme is a
-   pure inversion: ink and paper swap, muted and line move to
-   their inverse weights. No class names change — sections that
-   are `bg-ink text-paper` (contact, footer) automatically
-   become light-on-dark blocks inverted against the page.
-   ============================================================ */
+.site-header { position: fixed; inset-inline: 0; top: 0; z-index: var(--z-sticky-nav); }
 
-:root {
-  /* Light theme — paper page, ink type. */
-  --color-ink: 0 0 0;
-  --color-paper: 255 255 255;
-  --color-muted: 82 82 82;
-  --color-line: 229 229 229;
+.banner {
+  position: relative;
+  z-index: 2;
+  background: var(--color-paper);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.banner__inner {
+  min-height: var(--banner-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+/* The .ico is a full-bleed square tile with the avatar disc inside it, so the
+   tile is cropped to a circle. The ring keeps the dark disc readable on the
+   dark banner in the inverted theme. */
+.wordmark__mark {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 0 1px var(--color-rule-2);
+}
+.banner__actions { display: flex; align-items: center; gap: var(--space-2xs); }
+.banner__link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: var(--space-xs);
+}
+.banner__link:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+.banner__link:active { color: var(--color-accent-deep); }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--color-paper-2); }
+.icon-btn:active { background: var(--color-paper-3); }
+.icon-btn:disabled,
+.theme-toggle--wide:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }
 
-[data-theme='dark'] {
-  /* Dark theme — ink page, paper type. Still only two colors. */
-  --color-ink: 255 255 255;
-  --color-paper: 0 0 0;
-  --color-muted: 163 163 163;
-  --color-line: 48 48 48;
+.bar {
+  position: relative;
+  z-index: 1;
+  background: var(--color-paper);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+.bar__inner {
+  min-height: var(--bar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+.bar__links { display: flex; align-items: center; gap: var(--space-xl); }
+.bar__link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  text-decoration: none;
+  padding-block: var(--space-sm);
+}
+.bar__link:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+.bar__link:active { color: var(--color-accent-deep); }
+.bar__cv {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: none;
+  padding-block: var(--space-sm);
+}
+.bar__cv:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+.bar__cv:active { color: var(--color-accent-deep); }
+.site-header.is-retracted .bar { transform: translateY(-100%); }
+
+.menu-btn { display: none; }
+.menu-bars { display: grid; gap: var(--space-2xs); }
+.menu-bars span { display: block; width: 20px; height: 1px; background: currentColor; }
+.menu-icon-close { display: none; }
+#menu-btn[aria-expanded='true'] .menu-bars { display: none; }
+#menu-btn[aria-expanded='true'] .menu-icon-close { display: block; }
+
+.mobile-menu {
+  position: fixed;
+  inset-inline: 0;
+  top: var(--nav-h);
+  z-index: var(--z-dropdown);
+  background: var(--color-paper);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  padding: var(--space-md) var(--gutter) var(--space-lg);
+}
+.mobile-menu__links { display: grid; }
+.mobile-menu__link {
+  font-size: var(--text-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  padding-block: var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.mobile-menu__link:last-child { border-bottom: 0; }
+.mobile-menu__foot {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+.theme-toggle--wide {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+.theme-toggle-label { font-size: var(--text-sm); }
+
+.hero {
+  min-height: 100svh;
+  padding-top: calc(var(--nav-h) + var(--space-lg));
+  display: flex;
+  align-items: center;
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.hero__inner { width: 100%; }
+.hero__head { max-width: 18ch; }
+.hero__lead { margin-top: var(--space-md); max-width: 52ch; }
+.hero__actions {
+  margin-top: var(--space-lg);
+  max-width: 40rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-rule);
+}
+.action-link {
+  min-width: 0;
+  min-height: 112px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: calc(var(--radius-card) - 1px);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background-color var(--dur-micro) var(--ease-out);
+}
+.action-link:hover,
+.action-link:focus-visible { background: var(--color-paper-2); }
+.action-link:active { background: var(--color-paper-3); }
+.action-link--primary { background: var(--color-accent-wash); }
+.action-link--primary:hover,
+.action-link--primary:focus-visible {
+  background: color-mix(in oklab, var(--color-accent-wash) 78%, var(--color-accent) 22%);
+}
+.action-link__meta {
+  color: var(--color-muted);
+  font-family: var(--font-outlier);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.action-link--primary .action-link__meta { color: var(--color-accent-deep); }
+.action-link__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+.action-link__title {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: var(--display-weight);
+}
+.action-link__row svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  transition: transform var(--dur-micro) var(--ease-out);
+}
+.action-link:hover .action-link__row svg,
+.action-link:focus-visible .action-link__row svg { transform: translateX(3px); }
+.action-link__address {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  overflow-wrap: anywhere;
+}
+.action-link--primary .action-link__title,
+.action-link--primary .action-link__row svg { color: var(--color-accent-deep); }
+[data-theme='dark'] .action-link--primary .action-link__meta,
+[data-theme='dark'] .action-link--primary .action-link__title,
+[data-theme='dark'] .action-link--primary .action-link__row svg { color: var(--color-accent-2); }
+
+.work { margin-top: var(--space-2xl); }
+.work__label {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  margin-bottom: var(--space-xs);
+}
+.work__list { border-top: var(--rule-hair) solid var(--color-rule-2); }
+.work__row {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 5fr);
+  align-items: baseline;
+  gap: var(--space-lg);
+  padding-block: var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color var(--dur-micro) var(--ease-out);
+}
+.work__row:hover { background: var(--color-paper-2); }
+.work__row:active { background: var(--color-paper-3); }
+.work__title { font-size: var(--text-title); font-weight: 600; }
+.work__line {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+.work__meta {
+  display: grid;
+  gap: var(--space-3xs);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+.work__fact { font-size: var(--text-md); color: var(--color-ink-2); }
+.work__fact strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-section);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+}
+.work__fact span { display: block; margin-top: var(--space-2xs); font-size: var(--text-sm); }
+
+.section { padding-block: var(--section-gap); }
+.section__head { margin-bottom: var(--space-2xl); }
+.section__lead { margin-top: var(--space-md); max-width: 52ch; }
+
+.about { padding-block: var(--section-gap); }
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap-columns);
+}
+.about__intro { grid-column: 1 / span 3; }
+.about__caps { grid-column: 4 / span 6; }
+.about__facts {
+  grid-column: 10 / span 3;
+  display: grid;
+  gap: var(--space-lg);
+  align-content: start;
+  margin: 0;
+}
+.cap { border-top: var(--rule-hair) solid var(--color-rule); padding-block: var(--space-lg); }
+.cap:first-child { border-top: 0; padding-top: 0; }
+.cap h3 { font-size: var(--text-title); }
+.cap p { margin-top: var(--space-xs); color: var(--color-ink-2); max-width: 52ch; }
+.fact { border-top: var(--rule-hair) solid var(--color-rule); padding-top: var(--space-sm); }
+.fact dt { font-size: var(--text-sm); color: var(--color-muted); }
+.fact dd {
+  margin: var(--space-2xs) 0 0;
+  margin-inline-start: 0;
+  font-size: var(--text-md);
+  color: var(--color-ink);
 }
 
-/* Let the UA render scrollbars and form controls to match. */
-:root {
-  color-scheme: light;
+.projects { padding-block: var(--section-gap); }
+.case {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap-columns);
+  align-items: start;
 }
-[data-theme='dark'] {
-  color-scheme: dark;
+.case__text { grid-column: 1 / span 5; }
+.case__text p { max-width: 44ch; color: var(--color-ink-2); }
+.case__text p + p { margin-top: var(--space-md); }
+.case__link {
+  display: inline-block;
+  margin-top: var(--space-lg);
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-rule-2);
+  text-underline-offset: 0.2em;
 }
+.case__link:hover { text-decoration-color: var(--color-accent); }
+.case__link:active { color: var(--color-accent-deep); }
+.case__panels {
+  grid-column: 6 / span 7;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+.graphite { background: var(--color-graphite); color: var(--color-graphite-ink); }
+.pane {
+  padding: var(--space-lg);
+  border: var(--rule-hair) solid var(--color-graphite-2);
+  border-radius: var(--cut-l) 4px;
+}
+@supports (corner-shape: bevel) {
+  .pane {
+    border-radius: var(--cut-l) 4px var(--cut-l) 4px;
+    corner-shape: bevel round bevel round;
+  }
+}
+.pane__label {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-graphite-muted);
+}
+.turn { counter-reset: turn; margin-top: var(--space-md); display: grid; gap: var(--space-2xs); }
+.turn li {
+  counter-increment: turn;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: baseline;
+  font-size: var(--text-sm);
+}
+.turn li::before {
+  content: counter(turn);
+  font-family: var(--font-outlier);
+  font-size: var(--text-xs);
+  color: var(--color-graphite-muted);
+}
+.tools {
+  margin-top: var(--space-md);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2xs) var(--space-md);
+}
+.tools li { font-size: var(--text-sm); }
+.tools li:last-child {
+  grid-column: 1 / -1;
+  padding-top: var(--space-xs);
+  border-top: var(--rule-hair) solid var(--color-graphite-glyph-3);
+  color: var(--color-accent-2);
+}
+.case__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+.also {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
+  gap: var(--gap-columns);
+  align-items: baseline;
+}
+.also h3 { font-size: var(--text-title); }
+.also p { color: var(--color-ink-2); }
+.also a {
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-rule-2);
+  text-underline-offset: 0.2em;
+}
+.also a:hover { text-decoration-color: var(--color-accent); }
+.also a:active { color: var(--color-accent-deep); }
 
-/* --- Base ------------------------------------------------- */
-html {
-  scroll-behavior: smooth;
+.record { padding-block: var(--section-gap-l); }
+.record__head {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 6fr);
+  gap: var(--gap-columns);
+  padding-bottom: var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
 }
-
-body {
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+.record__row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 6fr);
+  gap: var(--gap-columns);
+  padding-block: var(--space-lg);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
 }
-
-/* --- Page substrate: dot grid ------------------------------ */
-/* The one global texture: a dot grid painted on the page itself,
-   so it reads through the transparent sections and is covered by
-   the opaque contact/footer blocks. Dots use the ink token at 18%,
-   so dark mode inverts the grid automatically — no separate
-   dark-mode rule. */
-body {
-  background-image: radial-gradient(
-    circle at center,
-    rgb(var(--color-ink) / 0.18) 2.5px,
-    transparent 2.5px
-  );
-  background-size: 28px 28px;
-  background-repeat: repeat;
+.record__years {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  font-variant-numeric: tabular-nums;
 }
+.record__role h3 { font-size: var(--text-title); }
+.record__place {
+  display: block;
+  margin-top: var(--space-2xs);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+.record__what { font-size: var(--text-md); color: var(--color-ink-2); max-width: 60ch; }
 
-/* Brief colour cross-fade when the theme is toggled. The
-   attribute is added by JS for the duration of one switch and
-   removed immediately after, so ordinary hover transitions
-   keep their own 100-150ms durations. */
+.contact { padding-block: var(--section-gap); }
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap-columns);
+}
+.contact__intro { grid-column: 1 / span 8; }
+.contact__lead { margin-top: var(--space-md); color: var(--color-graphite-muted); max-width: 52ch; }
+.contact__email {
+  grid-column: 1 / span 8;
+  display: inline-block;
+  margin-top: var(--space-lg);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-display-s);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.02;
+  color: var(--color-graphite-ink);
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+.contact__email:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg) var(--space-xl);
+  font-size: var(--text-md);
+}
+.contact__details {
+  grid-column: 9 / span 4;
+  grid-row: 1 / span 2;
+  align-self: end;
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-graphite-2);
+}
+.contact__links a { color: var(--color-graphite-ink); text-decoration: none; }
+.contact__links a:hover {
+  color: var(--color-accent-2);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.contact__place { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-graphite-muted); }
+.graphite :focus-visible { outline-color: var(--color-accent-2); }
+
+.footer { padding-block: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.footer__sign { font-size: var(--text-sm); color: var(--color-ink-2); }
+.footer__links { display: flex; flex-wrap: wrap; gap: var(--space-md) var(--space-lg); font-size: var(--text-sm); }
+.footer__links a { color: var(--color-ink-2); text-decoration: none; }
+.footer__links a:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+.footer__legal { font-size: var(--text-sm); color: var(--color-muted); }
+
 [data-theme-switch] *,
 [data-theme-switch] *::before,
 [data-theme-switch] *::after {
@@ -83,171 +563,47 @@ body {
     fill 200ms linear !important;
 }
 
-/* --- Fixed header ------------------------------------------ */
-/* Transparent over the hero. js/main.js adds .is-solid once the
-   page has scrolled past the hero, so nav links stay legible over
-   the sections below. Background follows the paper token, so the
-   opaque bar inverts with the theme like everything else.
-   The bottom hairline is demarcation only for the solid state:
-   while the header floats over the hero it must not draw a line. */
-#top {
-  transition: background-color 150ms ease, border-color 150ms ease;
-}
-#top:not(.is-solid) {
-  border-bottom-color: transparent;
-}
-#top.is-solid {
-  background-color: rgb(var(--color-paper));
-}
-
-/* --- Mobile menu button ------------------------------------ */
-/* Bars <-> X swap, driven entirely by the aria-expanded state that
-   js/main.js already maintains — no JS changes needed for the icon. */
-#menu-btn .menu-icon-close {
-  display: none;
-}
-#menu-btn[aria-expanded='true'] span {
-  display: none;
-}
-#menu-btn[aria-expanded='true'] .menu-icon-close {
-  display: block;
-}
-
-/* --- Focus: thick offset outline, per design system -------- */
-a:focus-visible,
-button:focus-visible {
-  outline: 3px solid rgb(var(--color-ink));
-  outline-offset: 3px;
-}
-
-/* On the inverted contact block, flip the ring to paper so it
-   stays visible against the black background in either theme. */
-#contact a:focus-visible,
-#contact button:focus-visible,
-footer a:focus-visible {
-  outline-color: rgb(var(--color-paper));
-}
-
-/* --- Sweep hover: left-to-right fill ------------------------- */
-/* Replaces the instant color inversion with a wipe. The fill
-   lives in ::before (scaleX 0 -> 1) behind the text; the text
-   color flips via the hover:text-* utility on hover and via the
-   rules below on keyboard focus, so contrast holds in both.
-   Two directions: .sweep-ink fills with ink (for paper
-   backgrounds); .sweep-paper fills with paper (for ink
-   backgrounds and solid-ink buttons). Base bg-* utilities stay
-   — the sweep covers them, so the end state matches the old
-   inversion, just animated. Rest origin is right so the wipe
-   exits to the right; hover origin is left so it enters from
-   the left. Longer than the 150ms color cap — the motion needs
-   room to read as a fill. Reduced-motion users get the instant
-   flip via the global transition neutraliser. */
-.sweep-ink,
-.sweep-paper {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  /* Text flips just after the fill starts, so mid-wipe contrast
-     always holds. Wins over Tailwind's transition-colors (same
-     specificity, later in the cascade) to add the delay. */
-  transition: color 150ms ease 60ms;
-}
-.sweep-ink::before,
-.sweep-paper::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-color: rgb(var(--color-ink));
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 260ms ease-out;
-}
-.sweep-paper::before {
-  background-color: rgb(var(--color-paper));
-}
-.sweep-ink:hover::before,
-.sweep-ink:focus-visible::before,
-.sweep-paper:hover::before,
-.sweep-paper:focus-visible::before {
-  transform: scaleX(1);
-  transform-origin: left center;
-}
-.sweep-ink:focus-visible {
-  color: rgb(var(--color-paper));
-}
-.sweep-paper:focus-visible {
-  color: rgb(var(--color-ink));
-}
-
-/* --- Footer: slow charcoal light ------------------------------ */
-/* Footer only — #contact is a photo section and renders clean
-   with no overlays beyond its legibility wash. */
-.ambient-footer {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.ambient-footer::before {
-  content: '';
-  position: absolute;
-  inset: -16% -8%;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(ellipse 78% 120% at 78% 8%, rgb(var(--color-paper) / 0.14), rgb(var(--color-paper) / 0.07) 30%, transparent 72%),
-    radial-gradient(ellipse 58% 120% at 55% -8%, rgb(var(--color-paper) / 0.06), transparent 70%),
-    radial-gradient(ellipse 120% 130% at 50% 52%, transparent 48%, rgb(var(--color-ink) / 0.24) 100%);
-  transform: translate3d(-0.45%, 0.2%, 0) scale(1.01);
-  animation: footer-atmosphere 32s ease-in-out infinite alternate;
-  animation-play-state: paused;
-}
-.ambient-footer.is-visible::before {
-  animation-play-state: running;
-}
-.ambient-footer > div {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes footer-atmosphere {
-  from {
-    transform: translate3d(-0.45%, 0.2%, 0) scale(1.01);
+@media (max-width: 60rem) {
+  .banner__link { display: none; }
+  .menu-btn { display: inline-flex; }
+  .bar { display: none; }
+  .hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-h) + var(--space-xl));
+    padding-bottom: var(--space-2xl);
   }
-  to {
-    transform: translate3d(0.45%, -0.2%, 0) scale(1.025);
+  .contact__intro, .contact__email, .contact__details { grid-column: 1 / -1; }
+  .contact__details { grid-row: auto; }
+  .work { margin-top: var(--space-xl); }
+  .work__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2xs);
   }
+  .work__meta { display: flex; gap: var(--space-sm); }
+  .about__grid { grid-template-columns: minmax(0, 1fr); }
+  .about__intro, .about__caps, .about__facts { grid-column: 1 / -1; }
+  .about__facts { margin-top: var(--space-xl); }
+  .case { grid-template-columns: minmax(0, 1fr); }
+  .case__text, .case__panels { grid-column: 1 / -1; }
+  .case__panels { grid-template-columns: minmax(0, 1fr); margin-top: var(--space-xl); }
+  .case__facts { margin-top: var(--space-xl); }
+  .also { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
+  .record__head { display: none; }
+  .record__row { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
 }
 
-/* --- Decorative square motif ------------------------------ */
-/* Recurring accent — the "signature" of the system. */
-.square-motif {
-  display: block;
-  width: 1rem;
-  height: 1rem;
-  background-color: rgb(var(--color-ink));
+@media (max-width: 40rem) {
+  .contact__email { font-size: clamp(var(--text-md), 5.2vw, var(--text-2xl)); }
+  .action-link__title { font-size: var(--text-sm); }
 }
 
-/* --- Reduced motion ---------------------------------------- */
+@media (max-width: 22rem) {
+  .hero__actions { grid-template-columns: minmax(0, 1fr); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
-  /* The theme-switch cross-fade uses a higher-specificity selector
-     above, so it has to be neutralised explicitly. */
+  html { scroll-behavior: auto; }
   [data-theme-switch] *,
   [data-theme-switch] *::before,
-  [data-theme-switch] *::after {
-    transition: none !important;
-  }
-  .ambient-footer::before {
-    animation: none;
-  }
+  [data-theme-switch] *::after { transition: none !important; }
 }

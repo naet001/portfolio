@@ -2,7 +2,7 @@
   "name": "portfolio",
   "private": true,
   "scripts": {
-    "build": "tailwindcss -i ./css/input.css -o ./css/main.css --minify",
+    "build": "tailwindcss -i ./css/input.css -o ./css/main.css",
     "dev": "tailwindcss -i ./css/input.css -o ./css/main.css --watch"
   },
   "devDependencies": {
